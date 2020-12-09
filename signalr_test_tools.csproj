@@ -10,5 +10,9 @@
   <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="9.31.2" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.1" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.0" />
   </ItemGroup>
+  <ItemGroup>
+     <DotNetCliToolReference Include="ElectronNET.CLI" Version="0.0.9" />
+</ItemGroup>
 </Project>
