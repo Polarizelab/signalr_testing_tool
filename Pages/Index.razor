@@ -1,0 +1,14 @@
+@page "/"
+@inject Services.SignalRConnector Connector
+<div class="container">
+    <h1>SignalR testing tool!</h1>
+    <EditForm OnValidSubmit="SubmitAsync">
+        <InputText/>
+        <button type="submit" class="text-center">Connect</button>
+    </EditForm>
+</div>
+@code{
+    private Task SubmitAsync(){
+        return Task.CompletedTask;
+    }
+}
