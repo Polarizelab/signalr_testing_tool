@@ -1,14 +1,29 @@
 @page "/"
 @inject Services.SignalRConnector Connector
+@inject NavigationManager Navigator
 <div class="container">
     <h1>SignalR testing tool!</h1>
-    <EditForm OnValidSubmit="SubmitAsync">
-        <InputText/>
-        <button type="submit" class="text-center">Connect</button>
+    <EditForm Model="@model" OnValidSubmit="SubmitAsync">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label for="address">Address</label>
+            <InputText  class="form-control" id="address" aria-describedby="addressHelp"
+                placeholder="Enter email" @bind-Value="model.Url" />
+            <small id="addressHelp" class="form-text text-danger">@error</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Connect</button>
     </EditForm>
 </div>
 @code{
-    private Task SubmitAsync(){
-        return Task.CompletedTask;
+    Models.Server model = new Models.Server();
+    string error;
+    private async Task SubmitAsync()
+    {
+        error = await Connector.Connect(model.Url);
+        if (string.IsNullOrEmpty(error))
+        {
+            Navigator.NavigateTo("/app");
+        }
     }
 }

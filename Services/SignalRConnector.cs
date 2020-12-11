@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -6,17 +7,25 @@ namespace signalr_test_tools.Services
     public class SignalRConnector
     {
         private HubConnection _hub;
-        private HubConnectionBuilder _hubBuilder;
         public SignalRConnector()
         {
-            _hubBuilder = new HubConnectionBuilder();
         }
-        public Task Connect(string url)
+        public async Task<string> Connect(string url)
         {
-            _hub =  _hubBuilder.WithUrl(url).Build();
-           return _hub.StartAsync();
+            try
+            {
+                var  hubBuilder = new HubConnectionBuilder();
+                _hub = hubBuilder.WithUrl(url).Build();
+                await _hub.StartAsync();
+                return string.Empty;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
         }
-        public Task Invoke(string methodName, string param){
+        public Task Invoke(string methodName, string param)
+        {
             return Task.CompletedTask;
         }
     }
