@@ -1,2 +1,51 @@
 @page "/app"
-<h1>App</h1>
+@inject Services.SignalRConnector Connector
+@inject NavigationManager Navigator
+<div class="container">
+    <h1>SignalR testing tool!</h1>
+    <EditForm Model="@model" OnValidSubmit="SubmitAsync">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label for="address">Method name</label>
+            <InputText class="form-control" id="address" aria-describedby="addressHelp" placeholder="Enter email"
+                @bind-Value="model.MethodName" />
+        </div>
+        <div class="form-group">
+            <label for="address">Method name</label>
+            <InputTextArea class="form-control" id="address" aria-describedby="addressHelp" placeholder="Enter email"
+                @bind-Value="model.DataText" />
+        </div>
+        <small id="addressHelp" class="form-text text-success">@message</small>
+        <small id="addressHelp" class="form-text text-danger">@error</small>
+        <button type="submit" class="btn btn-primary">Connect</button>
+    </EditForm>
+</div>
+@code{
+    Models.Message model = new Models.Message();
+    string error;
+    string message;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Connector.Hub.Closed += OnClosed;
+    }
+    private Task OnClosed(Exception e)
+    {
+        error = e.Message;
+        return Task.CompletedTask;
+    }
+    private async Task SubmitAsync()
+    {
+        error = await Connector.Invoke(model);
+        if (string.IsNullOrEmpty(error))
+        {
+            message = "OK";
+        }
+        else
+        {
+            message = string.Empty;
+        }
+    }
+}
+protected override void
