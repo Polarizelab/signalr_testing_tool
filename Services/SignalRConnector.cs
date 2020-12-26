@@ -11,34 +11,34 @@ namespace signalr_test_tools.Services
         public SignalRConnector()
         {
         }
-        public async Task<string> Connect(string url)
+        public async Task<Exception> Connect(string url)
         {
             try
             {
                 var hubBuilder = new HubConnectionBuilder();
                 Hub = hubBuilder.WithUrl(url).Build();
                 await Hub.StartAsync();
-                return string.Empty;
+                return null;
             }
             catch (Exception e)
             {
-                return e.Message;
+                return e;
             }
         }
 
 
-        public async Task<string> Invoke(Message param)
+        public async Task<Exception> Invoke(Message param)
         {
             try
             {
                 object data = param.DataText;
                 if (param.Data != null) data = param.Data;
                 await Hub.InvokeAsync(param.MethodName, data);
-                return string.Empty;
+                return null;
             }
             catch (Exception e)
             {
-                return e.Message;
+                return e;
             }
         }
     }

@@ -13,11 +13,7 @@ namespace signalr_test_tools.Models
                     json = System.Text.Json.JsonDocument.Parse(DataText);
                     return json;
                 }
-                catch (System.Text.Json.JsonException e)
-                {
-                    return json;
-                }
-                catch (System.ArgumentException ex)
+                catch 
                 {
                     return json;
                 }

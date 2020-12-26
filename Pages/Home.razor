@@ -13,27 +13,36 @@
         </div>
         <div class="form-group">
             <label for="address">Parameters</label>
-            <InputTextArea class="form-control" id="address" aria-describedby="addressHelp" placeholder='{"id": 1, "name": "John Snow"}'
-                @bind-Value="model.DataText" />
+            <InputTextArea class="form-control" id="address" aria-describedby="addressHelp"
+                placeholder='{"id": 1, "name": "John Snow"}' @bind-Value="model.DataText" />
         </div>
         <small class="form-text text-success">@message</small>
-        <small class="form-text text-danger">@error</small>
+        <small class="form-text text-danger">@error?.Message</small>
+        @if (error != null)
+        {
+            <a href="" @onclick:preventDefault @onclick="SeeDetail">Details</a>
+        }
+        @if (seeDetail)
+        {
+            <small class="form-text text-danger">@GetDetail()</small>
+        }
         <button type="submit" class="btn btn-primary">Invoke</button>
     </EditForm>
 </div>
 @code{
     Models.Message model = new Models.Message();
-    string error;
+    Exception error;
     string message;
+    bool seeDetail;
     private Task OnClosed(Exception e)
     {
-        error = e.Message;
+        error = e;
         return Task.CompletedTask;
     }
     private async Task SubmitAsync()
     {
         error = await Connector.Invoke(model);
-        if (string.IsNullOrEmpty(error))
+        if (error != null)
         {
             message = "OK";
         }
@@ -41,5 +50,13 @@
         {
             message = string.Empty;
         }
+    }
+    private void SeeDetail()
+    {
+        seeDetail = !seeDetail;
+    }
+    string GetDetail()
+    {
+        return error?.StackTrace;
     }
 }
