@@ -3,26 +3,17 @@
 @inject NavigationManager Navigator
 <div class="container">
     <h1>SignalR testing tool!</h1>
-    <EditForm Model="@model" OnValidSubmit="SubmitAsync">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group">
-            <label for="address">Address</label>
-            <InputText class="form-control" id="address" aria-describedby="addressHelp"
-                placeholder="http://localhost:5000/signalrhub" @bind-Value="model.Url" />
-            <small id="addressHelp" class="form-text text-danger">@error?.Message</small>
-            @if (error != null)
-            {
-                <a href="" @onclick:preventDefault @onclick="SeeDetail">Details</a>
-            }
-            @if (seeDetail)
-            {
-                <small class="form-text text-danger">@GetDetail()</small>
-            }
-        </div>
-
-        <button type="submit" class="btn btn-primary">Connect</button>
-    </EditForm>
+    <Search Size="@InputSize.Large" Placeholder="http://localhost:5000/signalrhub" @bind-Value="model.Url"
+        OnSearch="SubmitAsync" EnterButton="@("Connect")" />
+    <small id="addressHelp" class="form-text text-danger">@error?.Message</small>
+    @if (error != null)
+    {
+        <a href="" @onclick:preventDefault @onclick="SeeDetail">Details</a>
+    }
+    @if (seeDetail)
+    {
+        <small class="form-text text-danger">@GetDetail()</small>
+    }
 </div>
 @code{
     Models.Server model = new Models.Server();

@@ -28,6 +28,7 @@ namespace signalr_test_tools
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddAntDesign();
             services.AddSingleton<SignalRConnector>();
         }
 

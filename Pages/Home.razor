@@ -1,6 +1,5 @@
 @page "/app"
 @inject Services.SignalRConnector Connector
-@inject NavigationManager Navigator
 <div class="container">
     <h1>SignalR testing tool! (Hub status: @Connector.Hub.State.ToString())</h1>
     <EditForm Model="@model" OnValidSubmit="SubmitAsync">
@@ -26,7 +25,7 @@
         {
             <small class="form-text text-danger">@GetDetail()</small>
         }
-        <button type="submit" class="btn btn-primary">Invoke</button>
+        <Button HtmlType="submit" Type="primary">Invoke</Button>
     </EditForm>
 </div>
 @code{

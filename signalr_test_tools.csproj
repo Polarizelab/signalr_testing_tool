@@ -8,6 +8,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AntDesign" Version="0.4.1" />
     <PackageReference Include="ElectronNET.API" Version="9.31.2" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.1" />
     <PackageReference Include="System.Text.Encodings.Web" Version="5.0.0" />
