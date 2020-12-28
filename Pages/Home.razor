@@ -16,14 +16,14 @@
                 placeholder='{"id": 1, "name": "John Snow"}' @bind-Value="model.DataText" />
         </div>
         <small class="form-text text-success">@message</small>
-        <small class="form-text text-danger">@error?.Message</small>
         @if (error != null)
         {
+            <Alert Message="@error.Message" Type="@AlertType.Error" Banner></Alert>
             <a href="" @onclick:preventDefault @onclick="SeeDetail">Details</a>
         }
         @if (seeDetail)
         {
-            <small class="form-text text-danger">@GetDetail()</small>
+            <Alert Message="@GetDetail()" Type="@AlertType.Error" Banner></Alert>
         }
         <Button HtmlType="submit" Type="primary">Invoke</Button>
     </EditForm>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ElectronNET.API;
+using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -54,7 +55,20 @@ namespace signalr_test_tools
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+            Task.Run(async () =>
+            {
+                Electron.Menu.SetApplicationMenu(new ElectronNET.API.Entities.MenuItem[] { });
+                await Electron.WindowManager.CreateWindowAsync(
+                    new BrowserWindowOptions
+                    {
+                        Width = 480,
+                        Height = 720,
+                        Resizable = false,
+                        Maximizable = false,
+                        Fullscreenable = false
+                    }
+                );
+            });
         }
     }
 }

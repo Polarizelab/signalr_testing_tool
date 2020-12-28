@@ -5,14 +5,14 @@
     <h1>SignalR testing tool!</h1>
     <Search Size="@InputSize.Large" Placeholder="http://localhost:5000/signalrhub" @bind-Value="model.Url"
         OnSearch="SubmitAsync" EnterButton="@("Connect")" />
-    <small id="addressHelp" class="form-text text-danger">@error?.Message</small>
     @if (error != null)
     {
+        <Alert Message="@error.Message" Type="@AlertType.Error" Banner></Alert>
         <a href="" @onclick:preventDefault @onclick="SeeDetail">Details</a>
     }
     @if (seeDetail)
     {
-        <small class="form-text text-danger">@GetDetail()</small>
+        <Alert Message="@GetDetail()" Type="@AlertType.Error" Banner></Alert>
     }
 </div>
 @code{
