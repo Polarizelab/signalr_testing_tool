@@ -27,8 +27,41 @@
         }
         <Button HtmlType="submit" Type="primary">Invoke</Button>
     </EditForm>
+        <AntList Bordered DataSource="@items" Size="large" Class="my-2">
+            <Header>Message received</Header>
+            <ChildContent Context="item">
+                <ListItem>
+                   <div class="d-flex flex-column">
+                        <p>[@item.ReceivedTime](@item.Method)</p>
+                         <p>@item.Json</p>
+                   </div>
+                </ListItem>
+            </ChildContent>
+        </AntList>
 </div>
 @code{
+    public class LogItem
+    {
+        public string Method { get; set; }
+        public string Json { get; set; }
+        public DateTime ReceivedTime { get; set; }
+    }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Connector.OnReceive += Receive;
+        Connector.Listen("receive");
+    }
+    void Receive(string method, object arg)
+    {
+        items.Add(new LogItem{
+            Method = method,
+            Json = arg.ToString(),
+            ReceivedTime = DateTime.Now
+        });
+        StateHasChanged();
+    }
+    IList<LogItem> items = new List<LogItem>();
     Models.Message model = new Models.Message();
     Exception error;
     string message;
@@ -41,7 +74,7 @@
     private async Task SubmitAsync()
     {
         error = await Connector.Invoke(model);
-        if (error != null)
+        if (error == null)
         {
             message = "OK";
         }

@@ -8,6 +8,7 @@ namespace signalr_test_tools.Services
     public class SignalRConnector
     {
         public HubConnection Hub;
+        public event Action<string, object> OnReceive;
         public SignalRConnector()
         {
         }
@@ -40,6 +41,10 @@ namespace signalr_test_tools.Services
             {
                 return e;
             }
+        }
+        public void Listen(string methodName)
+        {
+            Hub.On<object>(methodName, (arg) => OnReceive.Invoke(methodName, arg));
         }
     }
 }
