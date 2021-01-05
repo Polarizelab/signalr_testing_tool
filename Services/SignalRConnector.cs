@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using signalr_test_tools.Models;
@@ -7,10 +9,12 @@ namespace signalr_test_tools.Services
 {
     public class SignalRConnector
     {
+        private IList<string> _listeners;
         public HubConnection Hub;
         public event Action<string, object> OnReceive;
         public SignalRConnector()
         {
+            _listeners = new List<string>();
         }
         public async Task<Exception> Connect(string url)
         {
@@ -44,6 +48,9 @@ namespace signalr_test_tools.Services
         }
         public void Listen(string methodName)
         {
+            if (_listeners.Any(f => f.Equals(methodName, StringComparison.CurrentCultureIgnoreCase)))
+                return;
+            _listeners.Add(methodName);
             Hub.On<object>(methodName, (arg) => OnReceive.Invoke(methodName, arg));
         }
     }
